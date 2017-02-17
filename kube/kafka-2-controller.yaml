@@ -33,7 +33,9 @@ spec:
             - name: NUM_PARTITIONS
               value: "3"
             - name: ADVERTISED_HOSTNAME
-              value: 10.3.0.221 
+              valueFrom:
+               fieldRef:
+                 fieldPath: status.podIP
             - name: ZOOKEEPER_CONNECT
               value: "zoo1:2181"
           ports:
