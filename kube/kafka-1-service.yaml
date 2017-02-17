@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: kafka-1
+  name: k-1
+  namespace: acp-system
   labels:
-    name: kafka-1
+    app: kafka-1
     service: kafka
     broker_id: "1"
-  namespace: acp-system
 spec:
   # type: ClusterIP
   clusterIP: 10.3.0.220
@@ -14,5 +14,5 @@ spec:
     - name: broker
       port: 9092
   selector:
-    name: kafka-1
+    app: kafka-1
     broker_id: "1"

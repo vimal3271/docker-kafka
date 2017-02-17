@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: kafka-1
+  name: kafka-controller-1
   namespace: acp-system
   labels:
     name: kafka-1
@@ -9,17 +9,17 @@ metadata:
 spec:
   replicas: 1
   selector:
-    name: kafka-1
+    app: kafka-1
     broker_id: "1"
   template:
     metadata:
       labels:
-        name: kafka-1
+        app: kafka-1
         broker_id: "1"
         service: kafka
     spec:
       containers:
-        - name: kafka
+        - name: k-1
           image: quay.io/ukhomeofficedigital/kafka:v0.0.1
           imagePullPolicy: Always
           resources:
