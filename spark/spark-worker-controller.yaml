@@ -1,0 +1,62 @@
+kind: ReplicationController
+apiVersion: v1
+metadata:
+  labels:
+    appid: 0596e831-818a-4f82-859c-b043a1ccb3b1
+    groupid: DEFAULT
+    version: 2.0.1-26
+  name: spark-worker-controller
+  namespace: acp-system
+spec:
+  replicas: 1
+  selector:
+    component: spark-worker
+    appid: 0596e831-818a-4f82-859c-b043a1ccb3b1
+    groupid: DEFAULT
+    version: 2.0.1-26
+  template:
+    metadata:
+      labels:
+        component: spark-worker
+        appid: 0596e831-818a-4f82-859c-b043a1ccb3b1
+        groupid: DEFAULT
+        version: 2.0.1-26
+    spec:
+      volumes:
+      - name: spark-defaults
+        configMap:
+          name: spark-defaults
+          items:
+            - key: sparkdefaults.conf
+              path: sparkdefaults.conf
+      - name: spark
+        configMap:
+          name: spark
+          items:
+            - key: spark.conf
+              path: spark.conf
+      containers:
+        - name: spark-worker
+          image: quay.io/arubadevops/spark-worker-jenkins:2.0.1-26
+          env:
+            - name: SPARK_MASTER_CONF
+              value: /etc/spark/spark.conf
+          ports:
+            - containerPort: 8081
+          resources:
+            requests:
+              memory: 2Gi
+              cpu: 5000m
+            limits:
+              memory: 2Gi
+              cpu: 5000m
+          volumeMounts:
+            - name: spark-defaults
+              mountPath: /etc/sparkdefaults
+              readOnly: true
+            - name: spark
+              mountPath: /etc/spark
+              readOnly: true
+      imagePullSecrets:
+        - name: robot-arubadevops-ghost
+

@@ -1,0 +1,58 @@
+kind: ReplicationController
+apiVersion: v1
+metadata:
+  name: mon-ae-clientstats-batch-scheduler
+  namespace: central
+  labels:
+    appid: 6507f6d3-6b1e-4de2-b619-1c98564121d0
+    groupid: DEFAULT
+    version: 1.3.0-2
+spec:
+  replicas: 1
+  selector:
+    component: mon-ae-clientstats-batch-scheduler
+    appid: 6507f6d3-6b1e-4de2-b619-1c98564121d0
+    groupid: DEFAULT
+    version: 1.3.0-2
+  template:
+    metadata:
+      labels:
+        component: mon-ae-clientstats-batch-scheduler
+        appid: 6507f6d3-6b1e-4de2-b619-1c98564121d0
+        groupid: DEFAULT
+        version: 1.3.0-2
+    spec:
+      volumes:
+      - name: mon-clientstats
+        configMap:
+          name: mon-ae-clientstats-batch-config
+          items:
+            - key: clientstats.conf
+              path: clientstats.conf
+      - name: runtimes
+        secret:
+          secretName: central-secrets
+      containers:
+        - name: mon-ae-clientstats-aggregator
+          image: quay.io/arubadevops/mon-ae-clientstats-aggregator:1.3.0-2
+          args:
+            - beat
+          volumeMounts:
+            - name: mon-clientstats
+              mountPath: /etc/spark-apps
+              readOnly: true
+            - name: runtimes
+              mountPath: /etc/central_secrets
+              readOnly: true
+          env:
+            - name: RUNTIME_CONF
+              value: /etc/central_secrets/runtime.conf
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 200m
+            limits:
+              memory: 512Mi
+              cpu: 200m
+      imagePullSecrets:
+        - name: quay.io

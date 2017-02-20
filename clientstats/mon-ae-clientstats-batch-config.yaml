@@ -1,0 +1,23 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mon-ae-clientstats-batch-config
+  namespace: central
+data:
+ clientstats.conf: |
+  app.spark_keyspace=analyticsdb
+  app.deploy_env=dev
+  app.protobuf_chunk_size=4500
+  app.spark_cassandra_parallelism_factor=2
+  app.log_level=INFO
+  celery.log_level=INFO
+  spark.ui.port=4040
+  spark.cores.max=1
+  spark.executor.memory=1g
+  spark.executor.cores=1
+  spark.driver.memory=2g
+  spark.cassandra.input.consistency.level=LOCAL_ONE
+  spark.cassandra.output.consistency.level=LOCAL_ONE
+  spark.cassandra.input.join.throughput_query_per_sec=1000
+
+

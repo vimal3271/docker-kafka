@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: spark-master-2
+  namespace: acp-system
+spec:
+  clusterIP: 10.3.0.176
+  type: NodePort
+  ports:
+    - name: master-2
+      port: 7077
+      targetPort: 7077
+    - name: webui-2
+      port: 8080
+      nodePort: 30052
+      targetPort: 8080
+  selector:
+    component: spark-master-2

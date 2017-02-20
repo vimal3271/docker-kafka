@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spark
+  namespace: acp-system
+  labels:
+    version: "1"
+data:
+  spark.conf: |-
+    {
+      "master": [
+        {
+          "host": "10.3.0.175",
+          "port": "7077",
+          "webPort": "8080"
+        },
+        {
+          "host": "10.3.0.176",
+          "port": "7077",
+          "webPort": "8080"
+        }
+      ]
+    }

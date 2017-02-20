@@ -1,0 +1,31 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mon-ae-clientstats-streaming-config
+  namespace: central
+data:
+ clientstats.conf: |
+  app.spark_keyspace=analyticsdb
+  app.deploy_env=dev
+  app.protobuf_chunk_size=4500
+  app.spark_cassandra_parallelism_factor=2
+  app.batch_interval=300
+  app.aggregation_interval=300
+  app.sleep_enabled=true
+  app.checkpoint_enable=true
+  app.receiver_type=kafka
+  app.kafka_topics=app.monitoring.client.stats.dev
+  app.zookeeper.session_timeout=10000
+  app.zookeeper.connection_timeout=5000
+  app.log_level=INFO
+  spark.ui.port=4040
+  spark.app.name=clientstats
+  spark.cores.max=1
+  spark.executor.memory=1g
+  spark.executor.cores=1
+  spark.driver.memory=2g
+  spark.streaming.kafka.maxRatePerPartition=50
+  spark.cassandra.input.consistency.level=LOCAL_ONE
+  spark.cassandra.output.consistency.level=LOCAL_ONE
+
+

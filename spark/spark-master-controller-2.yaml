@@ -1,0 +1,62 @@
+kind: ReplicationController
+apiVersion: v1
+metadata:
+  labels:
+    appid: 0596e831-818a-4f82-859c-b043a1ccb3b1
+    groupid: DEFAULT
+    version: 2.0.1-26
+  name: spark-master-controller-2
+  namespace: acp-system
+spec:
+  replicas: 1
+  selector:
+    component: spark-master-2
+    appid: 0596e831-818a-4f82-859c-b043a1ccb3b1
+    groupid: DEFAULT
+    version: 2.0.1-26
+  template:
+    metadata:
+      labels:
+        component: spark-master-2
+        appid: 0596e831-818a-4f82-859c-b043a1ccb3b1
+        groupid: DEFAULT
+        version: 2.0.1-26
+    spec:
+      volumes:
+      - name: spark-defaults
+        configMap:
+          name: spark-defaults
+          items:
+            - key: sparkdefaults.conf
+              path: sparkdefaults.conf
+      - name: zookeeper
+        configMap:
+          name: zookeeper
+          items:
+            - key: zookeeper.conf
+              path: zookeeper.conf
+      containers:
+        - name: spark-master-2
+          image: quay.io/arubadevops/spark-master-jenkins:2.0.1-26
+          env:
+            - name: ZOOKEEPER_CONF
+              value: /etc/zookeeper/zookeeper.conf
+          ports:
+            - containerPort: 7077
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 500m
+            limits:
+              memory: 1Gi
+              cpu: 500m
+          volumeMounts:
+            - name: spark-defaults
+              mountPath: /etc/sparkdefaults
+              readOnly: true
+            - name: zookeeper
+              mountPath: /etc/zookeeper
+              readOnly: true
+      imagePullSecrets:
+        - name: robot-arubadevops-ghost

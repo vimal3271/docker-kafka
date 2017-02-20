@@ -1,0 +1,16 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: spark-defaults
+  namespace: acp-system
+data:
+ sparkdefaults.conf: |
+  spark.ui.reverse.proxy=true
+  spark.deploy.recovery.mode=ZOOKEEPER
+  spark.worker.memory=2g
+  spark.worker.cores=2
+  spark.worker.cleanup.enabled=true
+  spark.worker.cleanup.interval=1800
+  spark.worker.cleanup.appdata.ttl=3600
+  spark.worker.log.level=WARN
+  spark.master.log.level=WARN
