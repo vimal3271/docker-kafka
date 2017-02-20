@@ -5,13 +5,13 @@ metadata:
   namespace: central
 data:
  clientstats.conf: |
-  app.spark_keyspace=analyticsdb
+  app.spark_keyspace=analyticsdb_clientstats_ft
   app.deploy_env=dev
   app.protobuf_chunk_size=4500
   app.spark_cassandra_parallelism_factor=2
-  app.batch_interval=300
-  app.aggregation_interval=300
-  app.sleep_enabled=true
+  app.batch_interval=30
+  app.aggregation_interval=60
+  app.sleep_enabled=false
   app.checkpoint_enable=true
   app.receiver_type=kafka
   app.kafka_topics=app.monitoring.client.stats.dev
