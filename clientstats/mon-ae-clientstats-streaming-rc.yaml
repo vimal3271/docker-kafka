@@ -50,7 +50,7 @@ spec:
             - name: KAFKA_BROKERS
               value: "10.3.0.220:9092,10.3.0.221:9092,10.3.0.222:9092"
             - name: ZOOKEEPER_SERVERS
-              value: "zoo1:2181"
+              value: "10.3.0.177:2181"
           resources:
             requests:
               memory: 2Gi
