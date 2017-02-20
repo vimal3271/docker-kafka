@@ -1,0 +1,67 @@
+./kafka-console-producer.sh --broker-list "k-2:9092,k-1:9092,k-3:9092" --topic test1
+
+./kafka-console-producer.sh --broker-list "10.3.0.220:9092,10.3.0.221:9093,10.3.0.222:9094" --topic test1
+./kafka-console-producer.sh --broker-list 10.2.82.9:9092 --topic test1
+
+./kafka-console-producer.sh --broker-list 10.3.0.220:9092 --topic test1
+
+./kafka-console-producer.sh --broker-list 10.2.82.61:9092 --topic test1
+./kafka-topics.sh --list --zookeeper zoo1:2181
+./kafka-console-consumer.sh --bootstrap-server "kafka-1:9092" --zookeeper "zoo1:2181" --topic test1 --from-beginning
+
+./kafka-console-consumer.sh  --zookeeper "zoo1:2181" --topic test1 --from-beginning
+
+./kafka-console-consumer.sh --bootstrap-server "10.3.0.220:9092,10.3.0.221:9093,10.3.0.222:9094"  --zookeeper "zoo1:2181" --topic test1 --from-beginning
+
+./kafka-console-consumer.sh --bootstrap-server "10.2.82.9:9092" --zookeeper "zoo1:2181" --topic test1 --from-beginning
+
+./kafka-console-consumer.sh --bootstrap-server  "k-2:9092,k-1:9092,k-3:9092" --zookeeper "zoo1:2181" --topic test1 --from-beginning
+
+./kafka-topics.sh --create --zookeeper zoo1:2181 --replication-factor 2 --partitions 4 --topic test2
+./kafka-topics.sh --list --zookeeper zoo1:2181
+
+./kafka-topics.sh --describe --zookeeper zoo1:2181 --topic test1
+
+
+
+Use kafka 0.10.1
+
+
+Approach 1:
+---------------
+use cloudtrackinc
+set the service file 
+set the adv host to service name
+try configuring cluster and check the broker ids.
+
+Result:
+
+
+Approach 2:
+------------
+set the cluster ip in rc file and service file
+
+Test cases:
+1)Verify the producer consumer accessible from other namespace -- 
+
+verified . It is able to send the data to pod in other namespace using the service cluster IP.
+
+Tested using a python console with kafka using leaderboard scheduler pod. 1.3.2 python-kafka version.
+
+
+2) Verify that spark is able to consume messages from kafka.
+
+3) What happens if you bring down replica-n nodes down where n < total replicas. 
+
+4) What happens if entire kafka cluster is brought down ?
+
+5) What happens to producer and consumer if a node is brought down ? Is restart required ?
+
+6) How to pin a kafka broker to particular pod in kubernetes ?
+
+7) Does the message gets sync after a node restart?
+
+
+
+
+
