@@ -4,7 +4,7 @@ metadata:
   name: spark-master-1
   namespace: acp-system
 spec:
-  clusterIP: 10.3.0.175
+  clusterIP: 10.3.0.233
   type: NodePort
   ports:
     - name: master-1

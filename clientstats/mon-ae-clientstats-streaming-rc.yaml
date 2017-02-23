@@ -51,6 +51,8 @@ spec:
               value: "10.3.0.220:9092,10.3.0.221:9092,10.3.0.222:9092"
             - name: ZOOKEEPER_SERVERS
               value: "10.3.0.177:2181"
+            - name: SPARK_MASTER
+              value: "spark://10.3.0.233:7077,10.3.0.176:7077"
           resources:
             requests:
               memory: 2Gi

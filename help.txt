@@ -11,18 +11,21 @@
 
 ./kafka-console-consumer.sh  --zookeeper "zoo1:2181" --topic test1 --from-beginning
 
-./kafka-console-consumer.sh --bootstrap-server "10.3.0.220:9092,10.3.0.221:9093,10.3.0.222:9094"  --zookeeper "zoo1:2181" --topic test1 --from-beginning
+./kafka-console-consumer.sh --bootstrap-server "10.3.0.220:9092,10.3.0.221:9092,10.3.0.222:9092"  --zookeeper "zoo1:2181" --topic test1 --from-beginning
 
 ./kafka-console-consumer.sh --bootstrap-server "10.2.82.9:9092" --zookeeper "zoo1:2181" --topic test1 --from-beginning
 
 ./kafka-console-consumer.sh --bootstrap-server  "k-2:9092,k-1:9092,k-3:9092" --zookeeper "zoo1:2181" --topic test1 --from-beginning
 
 ./kafka-topics.sh --create --zookeeper zoo1:2181 --replication-factor 2 --partitions 4 --topic test2
+./kafka-topics.sh --create --zookeeper zoo1:2181 --replication-factor 2 --partitions 4 --topic "app.monitoring.client.stats.dev"
 ./kafka-topics.sh --list --zookeeper zoo1:2181
 
-./kafka-topics.sh --describe --zookeeper zoo1:2181 --topic test1
+./kafka-topics.sh --describe --zookeeper zoo1:2181 --topic "app.monitoring.client.stats.dev"
 
+d
 
+CREATE USER IF NOT EXISTS athena WITH PASSWORD '@ruba123'
 
 Use kafka 0.10.1
 
@@ -34,12 +37,22 @@ set the service file
 set the adv host to service name
 try configuring cluster and check the broker ids.
 
+
+1-18636828903
 Result:
+
+
+Get the 
 
 
 Approach 2:
 ------------
 set the cluster ip in rc file and service file
+
+Set up:
+Used - kafka v0.9.1 docker
+advertised hostname -  status.podIP
+Have 3 service - 
 
 Test cases:
 1)Verify the producer consumer accessible from other namespace -- 
@@ -62,6 +75,51 @@ Tested using a python console with kafka using leaderboard scheduler pod. 1.3.2 
 7) Does the message gets sync after a node restart?
 
 
+Scale Test scenario
 
+Client stats 
+
+100KIAPs 100 swarm per group
+20 clients per IAP.
+
+For every 5min the data at one kafka node is increased by 100MB (approx)
+
+Linux 4.7.3-coreos-r3 (kafka-controller-1-tj6zr)        02/22/17        _x86_64_        (8 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           2.56    0.01    2.17    0.06    0.42   94.79
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+vda              21.41         0.42       180.98    1008264  436116660
+vdb               0.02         0.19         0.40     448852     965472
+
+
+Read rate 
+
+
+
+"spark://10.3.0.233:7077,10.3.0.176:7077"
+
+Linux 4.7.3-coreos-r3 (kafka-controller-1-tj6zr)        02/21/17        _x86_64_        (8 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle 
+           2.53    0.01    2.15    0.06    0.42   94.83
+
+Device:            tps    MB_read/s    MB_wrtn/s    MB_read    MB_wrtn
+vda              21.31         0.00         0.17        804     406309
+vdb               0.02         0.00         0.00        408        871
+
+
+
+
+[root@kafka-controller-1-tj6zr bin]# iostat       
+Linux 4.7.3-coreos-r3 (kafka-controller-1-tj6zr)        02/21/17        _x86_64_        (8 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           2.55    0.01    2.16    0.06    0.42   94.81
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+vda              21.33         0.42       180.27     992948  425942124
+vdb               0.02         0.18         0.40     420444     954220
 
 
